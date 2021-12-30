@@ -1,0 +1,21 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Formula {
+  id: ID!
+  name: String!
+  addYear: Float!
+  addMonth: Float!
+  addDay: Float!
+}
+
+type Query {
+  formulas: [Formula!]!
+}
+
+type Mutation {
+  createFormula(addDay: Float!, addMonth: Float!, addYear: Float!, name: String!): Formula!
+  updateFormula(addDay: Float!, addMonth: Float!, addYear: Float!, name: String!, id: Float!): Formula!
+  deleteFormula(id: Float!): Formula!
+}
