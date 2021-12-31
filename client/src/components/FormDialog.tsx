@@ -7,66 +7,103 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Formula } from 'types/formula';
 import { useState } from 'react';
+import { gql, useMutation } from '@apollo/client';
+
+const UPDATE_FORMULA = gql`
+  mutation {
+    updateFormula(
+      id: 2
+      name: "全部1減算!"
+      addYear: -1
+      addMonth: -1
+      addDay: -1
+    ) {
+      id
+      name
+      addYear
+      addMonth
+      addDay
+    }
+  }
+`;
 
 export default function FormDialog(props: {
   open: boolean;
   setOpen: Function;
   formula?: Formula;
 }) {
-  const [formula] = useState(
+  const [formula, setFormula] = useState(
     props.formula !== undefined
       ? props.formula
-      : { addYear: 0, addMonth: 0, addDay: 0 },
+      : { name: '', addYear: 0, addMonth: 0, addDay: 0 },
   );
+  const [updateFormula, { data, loading, error }] = useMutation(UPDATE_FORMULA);
+
   const handleClose = () => {
     props.setOpen(false);
   };
 
   const onAcceptButtonClick = () => {
+    updateFormula({
+      variables: {
+        id: props.formula?.id,
+        name: formula.name,
+        addYear: formula.addYear,
+        addMonth: formula.addMonth,
+        addDay: formula.addDay,
+      },
+    });
     handleClose();
   };
 
   return (
-    <div>
-      <Dialog open={props.open} onClose={handleClose}>
-        <DialogTitle>
-          {props.formula ? '計算式を編集' : '計算式を作成'}
-        </DialogTitle>
-        <DialogContent>
-          {/* <DialogContentText>説明文</DialogContentText> */}
-          年
-          <TextField
-            autoFocus
-            margin="dense"
-            type="number"
-            variant="standard"
-            value={formula.addYear}
-            style={{ width: '4rem' }}
-          />
-          月
-          <TextField
-            margin="dense"
-            type="number"
-            variant="standard"
-            value={formula.addMonth}
-            style={{ width: '3rem' }}
-          />
-          日
-          <TextField
-            margin="dense"
-            type="number"
-            variant="standard"
-            value={formula.addDay}
-            style={{ width: '3rem' }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>キャンセル</Button>
-          <Button onClick={onAcceptButtonClick} variant="contained">
-            決定
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog open={props.open} onClose={handleClose}>
+      <DialogTitle>
+        {props.formula ? '計算式を編集' : '計算式を作成'}
+      </DialogTitle>
+      <DialogContent>
+        {/* <DialogContentText>説明文</DialogContentText> */}
+        年
+        <TextField
+          autoFocus
+          margin="dense"
+          type="number"
+          variant="standard"
+          value={formula.addYear}
+          onChange={(event) => {
+            setFormula({ ...formula, addYear: parseInt(event.target.value) });
+          }}
+          style={{ width: '4rem' }}
+        />
+        月
+        <TextField
+          margin="dense"
+          type="number"
+          variant="standard"
+          value={formula.addMonth}
+          onChange={(event) => {
+            setFormula({ ...formula, addMonth: parseInt(event.target.value) });
+          }}
+          style={{ width: '3rem' }}
+        />
+        日
+        <TextField
+          margin="dense"
+          type="number"
+          variant="standard"
+          value={formula.addDay}
+          onChange={(event) => {
+            setFormula({ ...formula, addDay: parseInt(event.target.value) });
+          }}
+          style={{ width: '3rem' }}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>キャンセル</Button>
+        <Button onClick={onAcceptButtonClick} variant="contained">
+          決定
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

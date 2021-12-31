@@ -5,7 +5,7 @@ import QUERY_FORMULAS from 'FormulasQuery.graphql';
 
 import styles from 'styles/Home.module.css';
 import { Formula } from 'types/formula';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import FormulaRow from 'components/FormulaRow';
 
 export default function Home() {
@@ -106,7 +106,9 @@ export default function Home() {
           </thead>
           <tbody>
             {data.formulas.map((formula: Formula) => (
-              <FormulaRow formula={formula} baseDate={baseDate} />
+              <Fragment key={formula.id}>
+                <FormulaRow formula={formula} baseDate={baseDate} />
+              </Fragment>
             ))}
           </tbody>
         </table>
