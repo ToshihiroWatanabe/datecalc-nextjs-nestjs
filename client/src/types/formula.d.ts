@@ -1,5 +1,5 @@
 export interface Formula {
-  id: number;
+  id: string;
   name: string;
   addYear: number;
   addMonth: number;

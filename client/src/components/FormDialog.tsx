@@ -10,13 +10,19 @@ import { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
 
 const UPDATE_FORMULA = gql`
-  mutation {
+  mutation UpdateFormula(
+    $id: Float!
+    $name: String!
+    $addYear: Float!
+    $addMonth: Float!
+    $addDay: Float!
+  ) {
     updateFormula(
-      id: 2
-      name: "全部1減算!"
-      addYear: -1
-      addMonth: -1
-      addDay: -1
+      id: $id
+      name: $name
+      addYear: $addYear
+      addMonth: $addMonth
+      addDay: $addDay
     ) {
       id
       name
@@ -44,15 +50,17 @@ export default function FormDialog(props: {
   };
 
   const onAcceptButtonClick = () => {
-    updateFormula({
-      variables: {
-        id: props.formula?.id,
-        name: formula.name,
-        addYear: formula.addYear,
-        addMonth: formula.addMonth,
-        addDay: formula.addDay,
-      },
-    });
+    if (props.formula?.id !== undefined) {
+      updateFormula({
+        variables: {
+          id: parseInt(props.formula.id),
+          name: formula.name,
+          addYear: formula.addYear,
+          addMonth: formula.addMonth,
+          addDay: formula.addDay,
+        },
+      });
+    }
     handleClose();
   };
 
