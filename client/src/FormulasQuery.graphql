@@ -1,9 +1,0 @@
-query {
-  formulas {
-    id
-    name
-    addYear
-    addMonth
-    addDay
-  }
-}

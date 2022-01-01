@@ -5,6 +5,7 @@ import FormDialog from './FormDialog';
 export default function FormulaRow(props: {
   formula: Formula;
   baseDate: Date | null;
+  deleteFormula: Function;
 }) {
   const [formDialogOpen, setFormDialogOpen] = useState(false);
   let result = '';
@@ -50,7 +51,15 @@ export default function FormulaRow(props: {
         >
           編集
         </button>
-        <button>削除</button>
+        <button
+          onClick={() => {
+            props.deleteFormula({
+              variables: { id: parseInt(props.formula.id) },
+            });
+          }}
+        >
+          削除
+        </button>
       </td>
       <FormDialog
         open={formDialogOpen}

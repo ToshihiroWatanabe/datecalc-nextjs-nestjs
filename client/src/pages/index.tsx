@@ -1,15 +1,46 @@
 import Head from 'next/head';
-import { useQuery } from '@apollo/client';
-
-import QUERY_FORMULAS from 'FormulasQuery.graphql';
+import { gql, useMutation, useQuery } from '@apollo/client';
 
 import styles from 'styles/Home.module.css';
 import { Formula } from 'types/formula';
 import { Fragment, useState } from 'react';
 import FormulaRow from 'components/FormulaRow';
+import FormDialog from 'components/FormDialog';
+
+const QUERY_FORMULAS = gql`
+  query {
+    formulas {
+      id
+      name
+      addYear
+      addMonth
+      addDay
+    }
+  }
+`;
+
+const DELETE_FORMULA = gql`
+  mutation DeleteFormula($id: Float!) {
+    deleteFormula(id: $id) {
+      id
+      name
+      addYear
+      addMonth
+      addDay
+    }
+  }
+`;
 
 export default function Home() {
   const { data, loading, error } = useQuery(QUERY_FORMULAS);
+  const [
+    deleteFormula,
+    {
+      data: deleteFormulaData,
+      loading: deleteFormulaLoading,
+      error: deleteFormulaError,
+    },
+  ] = useMutation(DELETE_FORMULA);
 
   const dateNow = new Date();
 
@@ -33,6 +64,8 @@ export default function Home() {
     );
   };
 
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+
   if (error) {
     return <p>通信エラーが発生しました</p>;
   }
@@ -40,10 +73,11 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>日付の加減算アプリ</title>
+        <title>年月日の加減算アプリ</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>日付の加減算アプリ</h1>
+      <h1>年月日の加減算アプリ</h1>
+      <h2>計算元の日付</h2>
       <div>
         <input
           type="text"
@@ -95,7 +129,7 @@ export default function Home() {
           計算
         </button>
       </div>
-      <h1>計算式</h1>
+      <h2>計算式</h2>
       {loading && <p>ロード中...</p>}
       {!loading && (
         <table>
@@ -113,12 +147,24 @@ export default function Home() {
           <tbody>
             {data.formulas.map((formula: Formula) => (
               <Fragment key={formula.id}>
-                <FormulaRow formula={formula} baseDate={baseDate} />
+                <FormulaRow
+                  formula={formula}
+                  baseDate={baseDate}
+                  deleteFormula={deleteFormula}
+                />
               </Fragment>
             ))}
           </tbody>
         </table>
       )}
+      <button
+        onClick={() => {
+          setCreateDialogOpen(true);
+        }}
+      >
+        新しい計算式を作成
+      </button>
+      <FormDialog open={createDialogOpen} setOpen={setCreateDialogOpen} />
     </div>
   );
 }

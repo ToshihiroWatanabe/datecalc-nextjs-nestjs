@@ -34,6 +34,28 @@ const UPDATE_FORMULA = gql`
   }
 `;
 
+const CREATE_FORMULA = gql`
+  mutation CreateFormula(
+    $name: String!
+    $addYear: Float!
+    $addMonth: Float!
+    $addDay: Float!
+  ) {
+    createFormula(
+      name: $name
+      addYear: $addYear
+      addMonth: $addMonth
+      addDay: $addDay
+    ) {
+      id
+      name
+      addYear
+      addMonth
+      addDay
+    }
+  }
+`;
+
 export default function FormDialog(props: {
   open: boolean;
   setOpen: Function;
@@ -44,7 +66,23 @@ export default function FormDialog(props: {
       ? props.formula
       : { name: '', addYear: 0, addMonth: 0, addDay: 0 },
   );
-  const [updateFormula, { data, loading, error }] = useMutation(UPDATE_FORMULA);
+  const [
+    updateFormula,
+    {
+      data: updateFormulaData,
+      loading: updateFormulaLoading,
+      error: updateFormulaError,
+    },
+  ] = useMutation(UPDATE_FORMULA);
+
+  const [
+    createFormula,
+    {
+      data: createFormulaDate,
+      loading: createFormulaLoading,
+      error: createFormulaError,
+    },
+  ] = useMutation(CREATE_FORMULA);
 
   const handleClose = () => {
     props.setOpen(false);
@@ -55,6 +93,15 @@ export default function FormDialog(props: {
       updateFormula({
         variables: {
           id: parseInt(props.formula.id),
+          name: formula.name,
+          addYear: formula.addYear,
+          addMonth: formula.addMonth,
+          addDay: formula.addDay,
+        },
+      });
+    } else {
+      createFormula({
+        variables: {
           name: formula.name,
           addYear: formula.addYear,
           addMonth: formula.addMonth,
