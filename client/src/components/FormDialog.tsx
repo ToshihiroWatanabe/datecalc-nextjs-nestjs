@@ -8,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Formula } from 'types/formula';
 import { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
+import { Box } from '@mui/material';
 
 const UPDATE_FORMULA = gql`
   mutation UpdateFormula(
@@ -70,10 +71,21 @@ export default function FormDialog(props: {
         {props.formula ? '計算式を編集' : '計算式を作成'}
       </DialogTitle>
       <DialogContent>
+        <Box>
+          <TextField
+            autoFocus
+            margin="dense"
+            type="text"
+            variant="standard"
+            value={formula.name}
+            onChange={(event) => {
+              setFormula({ ...formula, name: event.target.value });
+            }}
+          />
+        </Box>
         {/* <DialogContentText>説明文</DialogContentText> */}
         年
         <TextField
-          autoFocus
           margin="dense"
           type="number"
           variant="standard"

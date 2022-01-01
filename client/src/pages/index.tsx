@@ -11,11 +11,17 @@ import FormulaRow from 'components/FormulaRow';
 export default function Home() {
   const { data, loading, error } = useQuery(QUERY_FORMULAS);
 
-  const [baseYearForm, setBaseYearForm] = useState('');
-  const [baseMonthForm, setBaseMonthForm] = useState('');
-  const [baseDayForm, setBaseDayForm] = useState('');
+  const dateNow = new Date();
 
-  const [baseDate, setBaseDate] = useState<Date | null>(null);
+  const [baseYearForm, setBaseYearForm] = useState(
+    String(dateNow.getFullYear()),
+  );
+  const [baseMonthForm, setBaseMonthForm] = useState(
+    String(dateNow.getMonth() + 1),
+  );
+  const [baseDayForm, setBaseDayForm] = useState(String(dateNow.getDate()));
+
+  const [baseDate, setBaseDate] = useState<Date>(dateNow);
 
   const onCalcButtonClick = () => {
     setBaseDate(
