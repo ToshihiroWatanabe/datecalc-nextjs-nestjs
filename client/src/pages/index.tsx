@@ -6,6 +6,7 @@ import { Formula } from 'types/formula';
 import { Fragment, useEffect, useState } from 'react';
 import FormulaRow from 'components/FormulaRow';
 import FormDialog from 'components/FormDialog';
+import { Box, Button, TextField, Typography } from '@mui/material';
 
 const FIND_FORMULAS = gql`
   query {
@@ -110,7 +111,7 @@ export default function Home() {
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
   if (findFormulasError) {
-    return <p>通信エラーが発生しました</p>;
+    return <Typography variant="body1">通信エラーが発生しました</Typography>;
   } else {
     return (
       <div className={styles.container}>
@@ -118,49 +119,51 @@ export default function Home() {
           <title>年月日の加減算アプリ</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <h1>年月日の加減算アプリ</h1>
-        <h2>計算元の日付</h2>
-        <div>
-          <input
-            type="text"
-            size={4}
-            maxLength={4}
+        <Typography component="h1" variant="h4">
+          年月日の加減算アプリ
+        </Typography>
+        <Typography component="h2" variant="h5">
+          計算元の日付
+        </Typography>
+        <Box style={{ display: 'flex', alignItems: 'center' }}>
+          <TextField
+            type="number"
+            size="small"
             value={baseYearForm}
             onChange={(event) => {
               if (event.target.value.match(/^[0-9]{0,4}$/)) {
                 setBaseYearForm(event.target.value);
               }
             }}
-            style={{ textAlign: 'right' }}
-          ></input>
-          年
-          <input
-            type="text"
-            size={2}
-            maxLength={2}
+            style={{ textAlign: 'right', width: '5rem' }}
+          />
+          <Typography>年</Typography>
+          <TextField
+            type="number"
+            size="small"
             value={baseMonthForm}
             onChange={(event) => {
               if (event.target.value.match(/^([1-9]{1}|1[0-2]|)$/)) {
                 setBaseMonthForm(event.target.value);
               }
             }}
-            style={{ textAlign: 'right' }}
-          ></input>
-          月
-          <input
-            type="text"
-            size={2}
-            maxLength={2}
+            style={{ textAlign: 'right', width: '4rem' }}
+          />
+          <Typography>月</Typography>
+          <TextField
+            type="number"
+            size="small"
             value={baseDayForm}
             onChange={(event) => {
               if (event.target.value.match(/^([1-9]{1}|[1-2][0-9]|3[0-1]|)$/)) {
                 setBaseDayForm(event.target.value);
               }
             }}
-            style={{ textAlign: 'right' }}
-          ></input>
-          日
-          <button
+            style={{ textAlign: 'right', width: '4rem' }}
+          />
+          <Typography>日</Typography>
+          <Button
+            variant="contained"
             onClick={onCalcButtonClick}
             disabled={
               !baseYearForm.match(/[1-9][0-9][0-9]/) ||
@@ -169,10 +172,16 @@ export default function Home() {
             }
           >
             計算
-          </button>
-        </div>
-        <h2>計算式</h2>
-        {findFormulasLoading && <p>ロード中...</p>}
+          </Button>
+        </Box>
+        <Typography component="h2" variant="h5">
+          計算式
+        </Typography>
+        {findFormulasLoading && (
+          <Typography component="p" variant="h5">
+            ロード中...
+          </Typography>
+        )}
         {findFormulasData && (
           <table>
             <thead>
