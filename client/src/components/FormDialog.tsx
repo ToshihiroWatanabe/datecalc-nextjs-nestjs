@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Formula } from 'types/formula';
 import { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import { Box } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 
 const UPDATE_FORMULA = gql`
   mutation UpdateFormula(
@@ -34,6 +34,8 @@ const UPDATE_FORMULA = gql`
   }
 `;
 
+const DEFAULT_FORMULA = { name: '', addYear: 0, addMonth: 0, addDay: 0 };
+
 export default function FormDialog(props: {
   open: boolean;
   setOpen: Function;
@@ -41,21 +43,22 @@ export default function FormDialog(props: {
   createFormula?: Function;
 }) {
   const [formula, setFormula] = useState(
-    props.formula !== undefined
-      ? props.formula
-      : { name: '', addYear: 0, addMonth: 0, addDay: 0 },
+    props.formula !== undefined ? props.formula : DEFAULT_FORMULA,
   );
   const [
     updateFormula,
     {
-      data: updateFormulaData,
-      loading: updateFormulaLoading,
-      error: updateFormulaError,
+      // data: updateFormulaData,
+      // loading: updateFormulaLoading,
+      // error: updateFormulaError,
     },
   ] = useMutation(UPDATE_FORMULA);
 
   const handleClose = () => {
     props.setOpen(false);
+    if (props.createFormula !== undefined) {
+      setFormula(DEFAULT_FORMULA);
+    }
   };
 
   const onAcceptButtonClick = () => {
@@ -90,7 +93,7 @@ export default function FormDialog(props: {
       <DialogContent>
         <Box>
           <TextField
-            autoFocus
+            label="名前"
             margin="dense"
             type="text"
             variant="standard"
@@ -101,39 +104,58 @@ export default function FormDialog(props: {
           />
         </Box>
         {/* <DialogContentText>説明文</DialogContentText> */}
-        年
-        <TextField
-          margin="dense"
-          type="number"
-          variant="standard"
-          value={formula.addYear}
-          onChange={(event) => {
-            setFormula({ ...formula, addYear: parseInt(event.target.value) });
-          }}
-          style={{ width: '4rem' }}
-        />
-        月
-        <TextField
-          margin="dense"
-          type="number"
-          variant="standard"
-          value={formula.addMonth}
-          onChange={(event) => {
-            setFormula({ ...formula, addMonth: parseInt(event.target.value) });
-          }}
-          style={{ width: '3rem' }}
-        />
-        日
-        <TextField
-          margin="dense"
-          type="number"
-          variant="standard"
-          value={formula.addDay}
-          onChange={(event) => {
-            setFormula({ ...formula, addDay: parseInt(event.target.value) });
-          }}
-          style={{ width: '3rem' }}
-        />
+        <Box style={{ display: 'flex', alignItems: 'baseline' }}>
+          <Typography>
+            {formula.addYear > 0 ? '+' : formula.addYear === 0 ? '±' : ''}
+          </Typography>
+          <Box ml={formula.addYear < 0 ? '0.6rem' : 0} />
+          <TextField
+            label="年"
+            margin="dense"
+            type="number"
+            variant="standard"
+            value={formula.addYear}
+            onChange={(event) => {
+              setFormula({ ...formula, addYear: parseInt(event.target.value) });
+            }}
+            style={{ width: '3rem' }}
+          />
+          <Box ml={1} />
+          <Typography>
+            {formula.addMonth > 0 ? '+' : formula.addMonth === 0 ? '±' : ''}
+          </Typography>
+          <Box ml={formula.addMonth < 0 ? '0.6rem' : 0} />
+          <TextField
+            label="月"
+            margin="dense"
+            type="number"
+            variant="standard"
+            value={formula.addMonth}
+            onChange={(event) => {
+              setFormula({
+                ...formula,
+                addMonth: parseInt(event.target.value),
+              });
+            }}
+            style={{ width: '3rem' }}
+          />
+          <Box ml={1} />
+          <Typography>
+            {formula.addDay > 0 ? '+' : formula.addDay === 0 ? '±' : ''}
+          </Typography>
+          <Box ml={formula.addDay < 0 ? '0.6rem' : 0} />
+          <TextField
+            label="日"
+            margin="dense"
+            type="number"
+            variant="standard"
+            value={formula.addDay}
+            onChange={(event) => {
+              setFormula({ ...formula, addDay: parseInt(event.target.value) });
+            }}
+            style={{ width: '3rem' }}
+          />
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>キャンセル</Button>

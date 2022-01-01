@@ -1,12 +1,25 @@
 import Head from 'next/head';
-import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
-
+import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import styles from 'styles/Home.module.css';
 import { Formula } from 'types/formula';
 import { Fragment, useEffect, useState } from 'react';
 import FormulaRow from 'components/FormulaRow';
 import FormDialog from 'components/FormDialog';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+} from '@mui/material';
+import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
+import AddIcon from '@mui/icons-material/Add';
+import { YOUBI } from 'utils/constants';
 
 const FIND_FORMULAS = gql`
   query {
@@ -95,7 +108,9 @@ export default function Home() {
   const [baseDate, setBaseDate] = useState<Date>(dateNow);
 
   useEffect(() => {
-    findFormulas();
+    setTimeout(() => {
+      findFormulas();
+    }, 1);
   }, [createFormulaDate, deleteFormulaData]);
 
   const onCalcButtonClick = () => {
@@ -114,7 +129,7 @@ export default function Home() {
     return <Typography variant="body1">通信エラーが発生しました</Typography>;
   } else {
     return (
-      <div className={styles.container}>
+      <Container className={styles.container}>
         <Head>
           <title>年月日の加減算アプリ</title>
           <link rel="icon" href="/favicon.ico" />
@@ -122,6 +137,7 @@ export default function Home() {
         <Typography component="h1" variant="h4">
           年月日の加減算アプリ
         </Typography>
+        <Box mt={3} />
         <Typography component="h2" variant="h5">
           計算元の日付
         </Typography>
@@ -138,6 +154,7 @@ export default function Home() {
             style={{ textAlign: 'right', width: '5rem' }}
           />
           <Typography>年</Typography>
+          <Box ml={1} />
           <TextField
             type="number"
             size="small"
@@ -150,6 +167,7 @@ export default function Home() {
             style={{ textAlign: 'right', width: '4rem' }}
           />
           <Typography>月</Typography>
+          <Box ml={1} />
           <TextField
             type="number"
             size="small"
@@ -161,7 +179,8 @@ export default function Home() {
             }}
             style={{ textAlign: 'right', width: '4rem' }}
           />
-          <Typography>日</Typography>
+          <Typography>日({YOUBI[baseDate.getDay()]})</Typography>
+          <Box ml={2} />
           <Button
             variant="contained"
             onClick={onCalcButtonClick}
@@ -171,9 +190,11 @@ export default function Home() {
               !baseDayForm
             }
           >
+            <CalculateOutlinedIcon />
             計算
           </Button>
         </Box>
+        <Box mt={3} />
         <Typography component="h2" variant="h5">
           計算式
         </Typography>
@@ -183,19 +204,19 @@ export default function Home() {
           </Typography>
         )}
         {findFormulasData && (
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>名前</th>
-                <th>年</th>
-                <th>月</th>
-                <th>日</th>
-                <th>計算結果</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table style={{ maxWidth: '720px' }}>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>名前</TableCell>
+                <TableCell>年</TableCell>
+                <TableCell>月</TableCell>
+                <TableCell>日</TableCell>
+                <TableCell>計算結果</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {findFormulasData.formulas.map((formula: Formula) => (
                 <Fragment key={formula.id}>
                   <FormulaRow
@@ -205,22 +226,25 @@ export default function Home() {
                   />
                 </Fragment>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         )}
-        <button
+        <Box mt={3} />
+        <Button
+          variant="outlined"
           onClick={() => {
             setCreateDialogOpen(true);
           }}
         >
+          <AddIcon />
           新しい計算式を作成
-        </button>
+        </Button>
         <FormDialog
           open={createDialogOpen}
           setOpen={setCreateDialogOpen}
           createFormula={createFormula}
         />
-      </div>
+      </Container>
     );
   }
 }
