@@ -1,6 +1,6 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { PrismaService } from 'src/prisma.service';
-import { Formula } from './models/formula.model';
+import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { PrismaService } from "prisma.service";
+import { Formula } from "formulas/models/formula.model";
 
 @Resolver(() => Formula)
 export class FormulasResolver {
@@ -13,10 +13,10 @@ export class FormulasResolver {
 
   @Mutation(() => Formula)
   async createFormula(
-    @Args('name') name: string,
-    @Args('addYear') addYear: number,
-    @Args('addMonth') addMonth: number,
-    @Args('addDay') addDay: number,
+    @Args("name") name: string,
+    @Args("addYear") addYear: number,
+    @Args("addMonth") addMonth: number,
+    @Args("addDay") addDay: number,
   ) {
     return this.prisma.formula.create({
       data: { name, addYear, addMonth, addDay },
@@ -25,11 +25,11 @@ export class FormulasResolver {
 
   @Mutation(() => Formula)
   async updateFormula(
-    @Args('id') id: number,
-    @Args('name') name: string,
-    @Args('addYear') addYear: number,
-    @Args('addMonth') addMonth: number,
-    @Args('addDay') addDay: number,
+    @Args("id") id: number,
+    @Args("name") name: string,
+    @Args("addYear") addYear: number,
+    @Args("addMonth") addMonth: number,
+    @Args("addDay") addDay: number,
   ) {
     return this.prisma.formula.update({
       data: { name, addYear, addMonth, addDay },
@@ -40,7 +40,7 @@ export class FormulasResolver {
   }
 
   @Mutation(() => Formula)
-  async deleteFormula(@Args('id') id: number) {
+  async deleteFormula(@Args("id") id: number) {
     return this.prisma.formula.delete({
       where: {
         id: id,

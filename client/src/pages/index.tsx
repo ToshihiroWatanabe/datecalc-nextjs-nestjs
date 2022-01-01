@@ -1,10 +1,10 @@
-import Head from 'next/head';
-import { gql, useLazyQuery, useMutation } from '@apollo/client';
-import styles from 'styles/Home.module.css';
-import { Formula } from 'types/formula';
-import { Fragment, useEffect, useState } from 'react';
-import FormulaRow from 'components/FormulaRow';
-import FormDialog from 'components/FormDialog';
+import Head from "next/head";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
+import styles from "styles/Home.module.css";
+import { Formula } from "types/formula";
+import { Fragment, useEffect, useState } from "react";
+import FormulaRow from "components/FormulaRow";
+import FormDialog from "components/FormDialog";
 import {
   Box,
   Button,
@@ -16,10 +16,10 @@ import {
   TableRow,
   TextField,
   Typography,
-} from '@mui/material';
-import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
-import AddIcon from '@mui/icons-material/Add';
-import { YOUBI } from 'utils/constants';
+} from "@mui/material";
+import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
+import AddIcon from "@mui/icons-material/Add";
+import { YOUBI } from "utils/constants";
 
 const FIND_FORMULAS = gql`
   query {
@@ -141,7 +141,7 @@ export default function Home() {
         <Typography component="h2" variant="h5">
           計算元の日付
         </Typography>
-        <Box style={{ display: 'flex', alignItems: 'center' }}>
+        <Box style={{ display: "flex", alignItems: "center" }}>
           <TextField
             type="number"
             size="small"
@@ -151,7 +151,7 @@ export default function Home() {
                 setBaseYearForm(event.target.value);
               }
             }}
-            style={{ textAlign: 'right', width: '5rem' }}
+            style={{ textAlign: "right", width: "5rem" }}
           />
           <Typography>年</Typography>
           <Box ml={1} />
@@ -164,7 +164,7 @@ export default function Home() {
                 setBaseMonthForm(event.target.value);
               }
             }}
-            style={{ textAlign: 'right', width: '4rem' }}
+            style={{ textAlign: "right", width: "4rem" }}
           />
           <Typography>月</Typography>
           <Box ml={1} />
@@ -177,7 +177,7 @@ export default function Home() {
                 setBaseDayForm(event.target.value);
               }
             }}
-            style={{ textAlign: 'right', width: '4rem' }}
+            style={{ textAlign: "right", width: "4rem" }}
           />
           <Typography>日({YOUBI[baseDate.getDay()]})</Typography>
           <Box ml={2} />
@@ -204,7 +204,7 @@ export default function Home() {
           </Typography>
         )}
         {findFormulasData && (
-          <Table style={{ maxWidth: '720px' }}>
+          <Table style={{ maxWidth: "720px" }}>
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>

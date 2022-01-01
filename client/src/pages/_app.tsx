@@ -1,13 +1,13 @@
-import type { AppProps } from 'next/app';
+import type { AppProps } from "next/app";
 
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3030/graphql',
+  uri: "http://localhost:3030/graphql",
   cache: new InMemoryCache(),
 });
 
-import '../styles/globals.css';
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
