@@ -1,0 +1,9 @@
+mutation DeleteFormula($id: Float!) {
+  deleteFormula(id: $id) {
+    id
+    name
+    addYear
+    addMonth
+    addDay
+  }
+}

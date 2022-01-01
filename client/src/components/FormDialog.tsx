@@ -1,40 +1,17 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Formula } from 'types/formula';
-import { useState } from 'react';
-import { gql, useMutation } from '@apollo/client';
-import { Box, Container, Typography } from '@mui/material';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import { Formula } from "types/formula";
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
+import UPDATE_FORMULA from "gql/UpdateFormula.graphql";
+import { Box, Typography } from "@mui/material";
 
-const UPDATE_FORMULA = gql`
-  mutation UpdateFormula(
-    $id: Float!
-    $name: String!
-    $addYear: Float!
-    $addMonth: Float!
-    $addDay: Float!
-  ) {
-    updateFormula(
-      id: $id
-      name: $name
-      addYear: $addYear
-      addMonth: $addMonth
-      addDay: $addDay
-    ) {
-      id
-      name
-      addYear
-      addMonth
-      addDay
-    }
-  }
-`;
-
-const DEFAULT_FORMULA = { name: '', addYear: 0, addMonth: 0, addDay: 0 };
+const DEFAULT_FORMULA = { name: "", addYear: 0, addMonth: 0, addDay: 0 };
 
 export default function FormDialog(props: {
   open: boolean;
@@ -88,7 +65,7 @@ export default function FormDialog(props: {
   return (
     <Dialog open={props.open} onClose={handleClose}>
       <DialogTitle>
-        {props.formula ? '計算式を編集' : '計算式を作成'}
+        {props.formula ? "計算式を編集" : "計算式を作成"}
       </DialogTitle>
       <DialogContent>
         <Box>
@@ -104,11 +81,11 @@ export default function FormDialog(props: {
           />
         </Box>
         {/* <DialogContentText>説明文</DialogContentText> */}
-        <Box style={{ display: 'flex', alignItems: 'baseline' }}>
+        <Box style={{ display: "flex", alignItems: "baseline" }}>
           <Typography>
-            {formula.addYear > 0 ? '+' : formula.addYear === 0 ? '±' : ''}
+            {formula.addYear > 0 ? "+" : formula.addYear === 0 ? "±" : ""}
           </Typography>
-          <Box ml={formula.addYear < 0 ? '0.6rem' : 0} />
+          <Box ml={formula.addYear < 0 ? "0.6rem" : 0} />
           <TextField
             label="年"
             margin="dense"
@@ -118,13 +95,13 @@ export default function FormDialog(props: {
             onChange={(event) => {
               setFormula({ ...formula, addYear: parseInt(event.target.value) });
             }}
-            style={{ width: '3rem' }}
+            style={{ width: "3rem" }}
           />
           <Box ml={1} />
           <Typography>
-            {formula.addMonth > 0 ? '+' : formula.addMonth === 0 ? '±' : ''}
+            {formula.addMonth > 0 ? "+" : formula.addMonth === 0 ? "±" : ""}
           </Typography>
-          <Box ml={formula.addMonth < 0 ? '0.6rem' : 0} />
+          <Box ml={formula.addMonth < 0 ? "0.6rem" : 0} />
           <TextField
             label="月"
             margin="dense"
@@ -137,13 +114,13 @@ export default function FormDialog(props: {
                 addMonth: parseInt(event.target.value),
               });
             }}
-            style={{ width: '3rem' }}
+            style={{ width: "3rem" }}
           />
           <Box ml={1} />
           <Typography>
-            {formula.addDay > 0 ? '+' : formula.addDay === 0 ? '±' : ''}
+            {formula.addDay > 0 ? "+" : formula.addDay === 0 ? "±" : ""}
           </Typography>
-          <Box ml={formula.addDay < 0 ? '0.6rem' : 0} />
+          <Box ml={formula.addDay < 0 ? "0.6rem" : 0} />
           <TextField
             label="日"
             margin="dense"
@@ -153,7 +130,7 @@ export default function FormDialog(props: {
             onChange={(event) => {
               setFormula({ ...formula, addDay: parseInt(event.target.value) });
             }}
-            style={{ width: '3rem' }}
+            style={{ width: "3rem" }}
           />
         </Box>
       </DialogContent>

@@ -1,0 +1,19 @@
+mutation CreateFormula(
+  $name: String!
+  $addYear: Float!
+  $addMonth: Float!
+  $addDay: Float!
+) {
+  createFormula(
+    name: $name
+    addYear: $addYear
+    addMonth: $addMonth
+    addDay: $addDay
+  ) {
+    id
+    name
+    addYear
+    addMonth
+    addDay
+  }
+}

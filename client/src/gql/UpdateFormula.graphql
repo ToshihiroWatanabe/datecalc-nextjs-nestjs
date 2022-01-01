@@ -1,0 +1,21 @@
+mutation UpdateFormula(
+  $id: Float!
+  $name: String!
+  $addYear: Float!
+  $addMonth: Float!
+  $addDay: Float!
+) {
+  updateFormula(
+    id: $id
+    name: $name
+    addYear: $addYear
+    addMonth: $addMonth
+    addDay: $addDay
+  ) {
+    id
+    name
+    addYear
+    addMonth
+    addDay
+  }
+}

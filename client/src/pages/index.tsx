@@ -1,5 +1,8 @@
 import Head from "next/head";
-import { gql, useLazyQuery, useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import FIND_FORMULAS from "gql/FindFormulas.graphql";
+import CREATE_FORMULA from "gql/CreateFormula.graphql";
+import DELETE_FORMULA from "gql/DeleteFormula.graphql";
 import styles from "styles/Home.module.css";
 import { Formula } from "types/formula";
 import { Fragment, useEffect, useState } from "react";
@@ -20,52 +23,6 @@ import {
 import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import { YOUBI } from "utils/constants";
-
-const FIND_FORMULAS = gql`
-  query {
-    formulas {
-      id
-      name
-      addYear
-      addMonth
-      addDay
-    }
-  }
-`;
-
-const CREATE_FORMULA = gql`
-  mutation CreateFormula(
-    $name: String!
-    $addYear: Float!
-    $addMonth: Float!
-    $addDay: Float!
-  ) {
-    createFormula(
-      name: $name
-      addYear: $addYear
-      addMonth: $addMonth
-      addDay: $addDay
-    ) {
-      id
-      name
-      addYear
-      addMonth
-      addDay
-    }
-  }
-`;
-
-const DELETE_FORMULA = gql`
-  mutation DeleteFormula($id: Float!) {
-    deleteFormula(id: $id) {
-      id
-      name
-      addYear
-      addMonth
-      addDay
-    }
-  }
-`;
 
 export default function Home() {
   const [
