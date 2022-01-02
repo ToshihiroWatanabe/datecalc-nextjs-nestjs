@@ -18,7 +18,11 @@ services:
   client:
     build: .
     working_dir: /app/client
-    command: npm run dev
+    command: >
+      npm install;
+      npm run dev
+    stdin_open: true
+    tty: true
     ports:
       - "3130:3000"
     volumes:
@@ -28,7 +32,12 @@ services:
   server:
     build: .
     working_dir: /app/server
-    command: npx prisma migrate dev --name formula && npm run start:dev
+    command: >
+      npm install;
+      npx prisma migrate dev --name formula &&
+      npm run start:dev
+    stdin_open: true
+    tty: true
     ports:
       - "3131:3030"
     volumes:
