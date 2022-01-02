@@ -6,13 +6,15 @@
 
 # 主な使用技術
 
+-   TypeScript
+
 -   Next.js
 
 -   MUI
 
 -   NestJS
 
--   GraphQL(Apollo + Prisma)
+-   GraphQL (Apollo + Prisma)
 
 -   MySQL
 
