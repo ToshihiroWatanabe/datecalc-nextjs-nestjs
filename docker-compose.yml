@@ -1,6 +1,29 @@
 version: '3'
 
 services:
+
+  client:
+    build: .
+    working_dir: /app/client
+    command: npm run dev
+    ports:
+      - "3130:3000"
+    volumes:
+      - .:/app
+      - /app/client/node_modules
+
+  server:
+    build: .
+    working_dir: /app/server
+    command: npx prisma migrate dev --name formula && npm run start:dev
+    ports:
+      - "3131:3030"
+    depends_on:
+      - "db"
+    volumes:
+      - .:/app
+      - /app/server/node_modules
+
   db:
     image: mysql:8.0
     environment:
@@ -12,35 +35,5 @@ services:
       - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./docker/db/sql:/docker-entrypoint-initdb.d
     ports:
-      - "3129:3306"
+      - "3132:3306"
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-
-  client:
-    build: .
-    working_dir: /app/client
-    command: >
-      npm install;
-      npm run dev
-    stdin_open: true
-    tty: true
-    ports:
-      - "3130:3000"
-    volumes:
-      - .:/app
-      - /app/client/node_modules
-
-  server:
-    build: .
-    working_dir: /app/server
-    command: >
-      npm install;
-      npx prisma migrate dev --name formula &&
-      npm run start:dev
-    stdin_open: true
-    tty: true
-    ports:
-      - "3131:3030"
-    volumes:
-      - .:/app
-      - /app/server/node_modules
-
