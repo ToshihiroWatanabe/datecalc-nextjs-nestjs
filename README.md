@@ -1,6 +1,6 @@
 # datecalc-nextjs-nestjs
 
-![image](https://user-images.githubusercontent.com/79039863/147854137-b7813176-d462-4a78-a824-322b540015c9.png)
+![image](https://user-images.githubusercontent.com/79039863/147871781-1482ea9f-99f7-4d6b-a70a-84a745a3ce08.png)
 
 年月日の加減算アプリ
 
@@ -27,3 +27,7 @@
     docker-compose up
 
 2.  <http://localhost:3000/>にアクセス
+
+# License
+
+MIT
