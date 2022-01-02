@@ -7,7 +7,7 @@ services:
     working_dir: /app/client
     command: npm run dev
     ports:
-      - "3130:3000"
+      - "3000:3000"
     volumes:
       - .:/app
       - /app/client/node_modules
@@ -15,11 +15,14 @@ services:
   server:
     build: .
     working_dir: /app/server
-    command: npx prisma migrate dev --name formula && npm run start:dev
+    command:
+      sh -c 'npx prisma migrate dev --name init; npm run start:dev'
     ports:
-      - "3131:3030"
+      - "3030:3030"
+      - "5555:5555"
     depends_on:
-      - "db"
+      db:
+        condition: service_healthy
     volumes:
       - .:/app
       - /app/server/node_modules
@@ -35,5 +38,9 @@ services:
       - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./docker/db/sql:/docker-entrypoint-initdb.d
     ports:
-      - "3132:3306"
+      - "3307:3306"
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 6s
+      retries: 10
