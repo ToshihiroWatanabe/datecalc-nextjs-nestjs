@@ -8,13 +8,11 @@
 
 -   Next.js
 
--   Apollo Client
-
 -   MUI
 
 -   NestJS
 
--   Prisma
+-   GraphQL(Apollo + Prisma)
 
 -   MySQL
 
